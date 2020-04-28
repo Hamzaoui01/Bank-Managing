@@ -1,7 +1,6 @@
 package siimaroc.com.BankManaging.DTOs;
 
 import lombok.Getter;
-import siimaroc.com.BankManaging.entities.Account;
 
 @Getter
 public class TransferMoneyDTO {

@@ -68,7 +68,7 @@ public class BankServiceImpl implements BankService{
 
     @Override
     public void transferMoney(TransferMoneyDTO transferMoneyDTO) {
-        creditAccount(transferMoneyDTO.getSenderAccountNumber(),transferMoneyDTO.getAmount());
-        debitAccount(transferMoneyDTO.getReceiverAccountNumber(),transferMoneyDTO.getAmount());
+        debitAccount(transferMoneyDTO.getSenderAccountNumber(),transferMoneyDTO.getAmount());
+        creditAccount(transferMoneyDTO.getReceiverAccountNumber(),transferMoneyDTO.getAmount());
     }
 }
