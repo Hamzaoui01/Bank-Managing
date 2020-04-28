@@ -3,6 +3,7 @@ package siimaroc.com.BankManaging.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Client implements Serializable {
     @Id @GeneratedValue
     private long id;

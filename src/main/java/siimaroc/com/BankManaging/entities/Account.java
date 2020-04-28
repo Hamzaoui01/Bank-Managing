@@ -2,9 +2,10 @@ package siimaroc.com.BankManaging.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -12,12 +13,15 @@ import java.util.Collection;
 @NoArgsConstructor
 @Getter
 public class Account implements Serializable {
+
+    private final String BANK_NAME ="CDM";
+
     @Id @GeneratedValue
     private long id;
     private String accountNumber;
     private double balance;
     private String currency;
-
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "clientId")
     private Client client;
@@ -29,6 +33,10 @@ public class Account implements Serializable {
         this.balance = balance;
         this.client = client;
         this.currency = currency;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = this.BANK_NAME+accountNumber;
     }
 
     public void creditAccount(double creditAmount){

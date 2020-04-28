@@ -1,26 +1,31 @@
 package siimaroc.com.BankManaging.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import siimaroc.com.BankManaging.DTOs.AccountDTO;
+import siimaroc.com.BankManaging.DTOs.OperationDTO;
 import siimaroc.com.BankManaging.DTOs.TransferMoneyDTO;
+import siimaroc.com.BankManaging.entities.Client;
+import siimaroc.com.BankManaging.repositories.ClientRepository;
+import siimaroc.com.BankManaging.services.BankService;
 import siimaroc.com.BankManaging.services.BankServiceImpl;
 
-@Controller
-@RepositoryRestResource(path = "/bank")
+@RestController
+@RequestMapping(value = "/bank-manager")
 public class BankController {
 
-    private BankServiceImpl bankService = new BankServiceImpl();
+    private final BankService bankService;
 
-    @PutMapping(value = "/credits/{accountNumber}")
-    public void creditMoneyToAccount(@PathVariable(value = "accountNumber") String accountNumber, @RequestBody double creditAmount){
-        bankService.creditAccount(accountNumber,creditAmount);
+    BankController(BankService bankService){ this.bankService = bankService;}
+
+    @PostMapping(value = "/credits")
+    public void creditMoneyToAccount(@RequestBody OperationDTO operationDTO){
+        bankService.creditAccount(operationDTO.getAccountNumber(),operationDTO.getAmount());
     }
 
-    @PutMapping(value = "/debits/{accountNumber}")
-    public void debitMoneyFromAccount(@PathVariable(value = "accountNumber") String accountNumber, @RequestBody double debitAmount){
-        bankService.debitAccount(accountNumber,debitAmount);
+    @PutMapping(value = "/debits")
+    public void debitMoneyFromAccount(@RequestBody  OperationDTO operationDTO){
+        bankService.debitAccount(operationDTO.getAccountNumber(),operationDTO.getAmount());
     }
 
     @PostMapping("/transfer")
@@ -28,4 +33,14 @@ public class BankController {
         bankService.transferMoney(transferMoneyDTO);
     }
 
+    @PostMapping("/accounts")
+    public void createAccount(@RequestBody AccountDTO accountDTO){
+        System.out.println(accountDTO);
+        bankService.createAccount(accountDTO.getClientId(),accountDTO.getBalance(),accountDTO.getCurrency());
+    }
+
+    @GetMapping
+    public String getHello(){
+        return "OK";
+    }
 }

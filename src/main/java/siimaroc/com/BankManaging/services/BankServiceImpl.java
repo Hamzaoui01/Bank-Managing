@@ -1,6 +1,5 @@
 package siimaroc.com.BankManaging.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import siimaroc.com.BankManaging.DTOs.TransferMoneyDTO;
 import siimaroc.com.BankManaging.entities.Account;
@@ -10,15 +9,20 @@ import siimaroc.com.BankManaging.repositories.AccountRepository;
 import siimaroc.com.BankManaging.repositories.ClientRepository;
 import siimaroc.com.BankManaging.repositories.OperationRepository;
 
+import javax.persistence.Id;
+
 @Service
 public class BankServiceImpl implements BankService{
 
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private OperationRepository operationRepository;
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
+    private final AccountRepository accountRepository;
+    private final OperationRepository operationRepository;
+
+    public BankServiceImpl(ClientRepository clientRepository,AccountRepository accountRepository,OperationRepository operationRepository){
+        this.clientRepository = clientRepository;
+        this.accountRepository = accountRepository;
+        this.operationRepository = operationRepository;
+    }
 
     @Override
     public void creditAccount(String accountNumber, double creditAmount) {
@@ -44,9 +48,16 @@ public class BankServiceImpl implements BankService{
     public void createAccount(long clientId, double balance, String currency) {
         Client client = clientRepository.getOne(clientId);
         Account account = new Account(client,balance,currency);
+        account = saveAccount(account);
         client.addAccount(account);
         clientRepository.save(client);
+    }
+
+    private Account saveAccount(Account account) {
+        account =accountRepository.save(account);
+        account.setAccountNumber(""+account.getId());
         accountRepository.save(account);
+        return account;
     }
 
     @Override

@@ -27,6 +27,7 @@ public  class Operation implements Serializable {
         this.dateOperation = new Date();
         this.amount = amount;
         this.account = account;
+        this.typeOperation = typeOperation;
     }
 
 }
