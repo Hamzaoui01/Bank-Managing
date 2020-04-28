@@ -22,7 +22,7 @@ public class AccountController {
 
     @PostMapping(value = "/new")
     public void createAccount(@RequestBody AccountDTO accountDTO){
-        bankService.createAccount(accountDTO.getClientId(),accountDTO.getBalance(),accountDTO.getCurrency());
+        bankService.createAccountForClient(accountDTO.getClientId(),accountDTO.getBalance(),accountDTO.getCurrency());
     }
 
 }

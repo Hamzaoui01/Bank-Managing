@@ -26,15 +26,12 @@ public class BankServiceImpl implements BankService{
 
     @Override
     public void creditAccount(String accountNumber, double creditAmount) {
-        Account account = getAccount(accountNumber);
+        Account account = accountRepository.findByNumber(accountNumber);
         account.creditAccount(creditAmount);
         Operation operation = new Operation("Credit",account,creditAmount);
         operationRepository.save(operation);
     }
 
-    public Account getAccount(String accountNumber) {
-        return  accountRepository.findByNumber(accountNumber);
-    }
 
     @Override
     public void debitAccount(String accountNumber, double debitAmount) {
@@ -45,7 +42,7 @@ public class BankServiceImpl implements BankService{
     }
 
     @Override
-    public void createAccount(long clientId, double balance, String currency) {
+    public void createAccountForClient(long clientId, double balance, String currency) {
         Client client = clientRepository.getOne(clientId);
         Account account = new Account(client,balance,currency);
         account = saveAccount(account);
@@ -58,12 +55,6 @@ public class BankServiceImpl implements BankService{
         account.setAccountNumber(""+account.getId());
         accountRepository.save(account);
         return account;
-    }
-
-    @Override
-    public void createClient(String name, String email, String telephone) {
-        Client client = new Client(name,email,telephone);
-        clientRepository.save(client);
     }
 
     @Override
